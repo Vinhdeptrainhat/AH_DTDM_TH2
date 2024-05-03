@@ -1,0 +1,46 @@
+#Bài 3: Viết chương trình cho phép nhập vào n số nguyên. Sau đó thực hiện sắp xếp dãy số nguyên đó theo thứ tự bằng 1 trong các thuật toán sắp xếp đã học: Insertion Sort, Selection Sort, Bubble Sort, Merge Sort.
+from ._anvil_designer import Form2Template
+from anvil import *
+import anvil.server
+import anvil.tables as tables
+import anvil.tables.query as q
+from anvil.tables import app_tables
+
+class Form2(Form2Template):
+    def __init__(self, **properties):
+        # Set Form properties and Data Bindings.
+        self.init_components(**properties)
+        
+        # Thiết lập sự kiện cho nút "button_1" và "button_2"
+        self.button_1.set_event_handler('click', self.button_1_click)
+        self.button_2.set_event_handler('click', self.button_2_click)
+        
+        # Any code you write here will run when the form opens.
+
+    def insertion_sort(self, arr):
+        for i in range(1, len(arr)):
+            key = arr[i]
+            j = i - 1
+            while j >= 0 and key < arr[j]:
+                arr[j + 1] = arr[j]
+                j -= 1
+            arr[j + 1] = key
+
+    def button_1_click(self, **event_args):
+        numbers = [int(x) for x in self.text_box_2.text.split()]
+        
+        self.insertion_sort(numbers)
+        
+        sorted_numbers_asc = ' '.join(map(str, numbers))
+        self.label_3.text = sorted_numbers_asc
+      
+
+    def button_2_click(self, **event_args):
+        numbers = [int(x) for x in self.text_box_2.text.split()]
+        
+        self.insertion_sort(numbers)
+        
+        sorted_numbers_desc = ' '.join(map(str, reversed(numbers)))
+        self.label_4.text =sorted_numbers_desc
+        
+  
