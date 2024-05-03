@@ -8,39 +8,58 @@ from anvil.tables import app_tables
 
 class Form2(Form2Template):
     def __init__(self, **properties):
-        # Set Form properties and Data Bindings.
+        # Set Form properties and Data Bindings
         self.init_components(**properties)
         
-        # Thiết lập sự kiện cho nút "button_1" và "button_2"
+        # Thiết lập sự kiện cho nút "button_1", "button_2" và "button_3"
         self.button_1.set_event_handler('click', self.button_1_click)
         self.button_2.set_event_handler('click', self.button_2_click)
+        self.button_3.set_event_handler('click', self.button_3_click)
         
         # Any code you write here will run when the form opens.
 
-    def insertion_sort(self, arr):
+    def insertion_sort(self, arr, ascending=True):
+        text_area_content = ""
         for i in range(1, len(arr)):
             key = arr[i]
             j = i - 1
-            while j >= 0 and key < arr[j]:
+            while j >= 0 and ((key < arr[j]) if ascending else (key > arr[j])):
                 arr[j + 1] = arr[j]
                 j -= 1
             arr[j + 1] = key
+            
+            # Cập nhật nội dung cho TextArea sau mỗi lần lặp
+            text_area_content += f"Iteration {i}: {' '.join(map(str, arr))}\n"
+        
+        self.text_area_1.text = text_area_content
 
     def button_1_click(self, **event_args):
         numbers = [int(x) for x in self.text_box_2.text.split()]
         
-        self.insertion_sort(numbers)
+        # Xóa nội dung cũ của text_area_1
+        self.text_area_1.text = ""
         
-        sorted_numbers_asc = ' '.join(map(str, numbers))
-        self.label_3.text = sorted_numbers_asc
-      
+        # Sắp xếp dãy số tăng dần và cập nhật nội dung
+        self.insertion_sort(numbers, ascending=True)
+        
+        # Hiển thị dãy số tăng dần trên label_3
+        self.label_3.text = ' '.join(map(str, numbers))
 
     def button_2_click(self, **event_args):
         numbers = [int(x) for x in self.text_box_2.text.split()]
         
-        self.insertion_sort(numbers)
+        # Xóa nội dung cũ của text_area_1
+        self.text_area_1.text = ""
         
-        sorted_numbers_desc = ' '.join(map(str, reversed(numbers)))
-        self.label_4.text =sorted_numbers_desc
+        # Sắp xếp dãy số giảm dần và cập nhật nội dung
+        self.insertion_sort(numbers, ascending=False)
         
-  
+        # Hiển thị dãy số giảm dần trên label_4
+        self.label_4.text = ' '.join(map(str, numbers))
+
+    def button_3_click(self,**event_args):
+        # Xóa nội dung của text_area_1 và các nhãn tương ứng
+        self.text_area_1.text = ""
+        self.label_3.text = ""
+        self.label_4.text = ""
+ 
